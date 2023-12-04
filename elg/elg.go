@@ -7,22 +7,6 @@ import (
 	"math/big"
 )
 
-func isPrimitiveRoot(g, p *big.Int) bool {
-	phi := new(big.Int).Sub(p, big.NewInt(1)) // phi(p)
-	o := new(big.Int).Set(phi)                // порядок групи
-
-	for i := 2; i <= phi.BitLen(); i++ {
-		if phi.Mod(phi, big.NewInt(int64(i))).Cmp(big.NewInt(0)) == 0 {
-			// Перевіряємо, чи g^(phi/i) mod p != 1 для кожного дільника phi
-			o.Div(phi, big.NewInt(int64(i)))
-			if new(big.Int).Exp(g, o, p).Cmp(big.NewInt(1)) == 0 {
-				return false
-			}
-		}
-	}
-	return true
-}
-
 // basic check, not full
 func findPrimitiveRoot(p *big.Int) (*big.Int, error) {
 	two := big.NewInt(2)
